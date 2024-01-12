@@ -2,3 +2,4 @@
 
 
 ![alt text](https://github.com/JesperBoman/DNA_methylation_flycatchers/blob/main/GH_cover.jpg)
+Picture modified from a generation by Wombo AI
