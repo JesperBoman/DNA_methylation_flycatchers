@@ -1,8 +1,12 @@
 #### PART 2 ####
-install.packages("BiSeq")
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("BiSeq")
 library("BiSeq")
 library("plyr")
-tissue="Heart" #Fill in tissue here
+library("lmodel2")
+library("ggplot2")
 
 FDR.level <- 0.1
 
@@ -77,22 +81,20 @@ for (tissue in c("Heart", "Brain", "Testis", "Liver" )){ #,"Heart", "Liver", "Br
   
   for(region in paste(reg_bed_file$V1, reg_bed_file$V2, reg_bed_file$V3, sep="_")){
     
-    if( is.na(rej.COLvPIE.par) == T ){COLvPIE.par.test=0} 
+    if( empty(rej.COLvPIE.par[rej.COLvPIE.par$X ==  region,]) == T){COLvPIE.par.test=0} 
     else {COLvPIE.par.test=length(rej.COLvPIE.par[rej.COLvPIE.par$X ==  region,]$X)}
     
-    if( is.na(rej.COLvPIE.hyb) == T ){COLvPIE.hyb.test=0} 
+    if( empty(rej.COLvPIE.hyb[rej.COLvPIE.hyb$X ==  region,]) == T ){COLvPIE.hyb.test=0} 
     else {COLvPIE.hyb.test=length(rej.COLvPIE.hyb[rej.COLvPIE.hyb$X ==  region,]$X)}
     
-    if( is.na(rej.COL.comb) == T ){COL.comb.test=0} 
+    if( empty(rej.COL.comb[rej.COL.comb$X ==  region,]) == T ){COL.comb.test=0} 
     else {COL.comb.test=length(rej.COL.comb[rej.COL.comb$X ==  region,]$X)}
     
-    if( is.na(rej.PIE.comb) == T ){PIE.comb.test=0} 
+    if( empty(rej.PIE.comb[rej.PIE.comb$X ==  region,]) == T ){PIE.comb.test=0} 
     else {PIE.comb.test=length(rej.PIE.comb[rej.PIE.comb$X ==  region,]$X)}
 
     
-#    H_C_v_P <-sum(meth_annot_data_reg[meth_annot_data_reg$Type == "Hybrid-COL" & meth_annot_data_reg$region_ID == region & meth_annot_data_reg$Tissue == tissue, ]$Mean_of_ratios_per_dinuc, na.rm=T) - sum(meth_annot_data_reg[meth_annot_data_reg$Type == "Hybrid-PIE" & meth_annot_data_reg$region_ID == region & meth_annot_data_reg$Tissue == tissue, ]$Mean_of_ratios_per_dinuc, na.rm=T)
-#    P_C_v_P <-sum(meth_annot_data_reg[meth_annot_data_reg$Type == "Parental-COL" & meth_annot_data_reg$region_ID == region & meth_annot_data_reg$Tissue == tissue, ]$Mean_of_ratios_per_dinuc, na.rm=T) - sum(meth_annot_data_reg[meth_annot_data_reg$Type == "Parental-PIE" & meth_annot_data_reg$region_ID == region & meth_annot_data_reg$Tissue == tissue, ]$Mean_of_ratios_per_dinuc, na.rm=T)
-    if( empty(rej.COLvPIE.par[rej.COLvPIE.par$X ==  region,]) == T & empty(not.rej.COLvPIE.par[not.rej.COLvPIE.par$X ==  region,]) == T | empty(rej.COLvPIE.hyb[rej.COLvPIE.hyb$X ==  region,]) == T & empty(not.rej.COLvPIE.hyb[not.rej.COLvPIE.hyb$X ==  region,]) == T ){
+  if( empty(rej.COLvPIE.par[rej.COLvPIE.par$X ==  region,]) == T & empty(not.rej.COLvPIE.par[not.rej.COLvPIE.par$X ==  region,]) == T | empty(rej.COLvPIE.hyb[rej.COLvPIE.hyb$X ==  region,]) == T & empty(not.rej.COLvPIE.hyb[not.rej.COLvPIE.hyb$X ==  region,]) == T ){
       ambig.stat <- c(ambig.stat, region)
 
     }
@@ -174,13 +176,16 @@ for (tissue in c("Heart", "Brain", "Testis", "Liver" )){ #,"Heart", "Liver", "Br
   regulatory_class_data_stat$PIE_Par_v_Hyb_biseq <- NA
   
   for(region in regulatory_class_data_stat[regulatory_class_data_stat$Regpat != "Ambiguous",]$region_ID){
-    if( is.na(rej.COLvPIE.par) == T){COLvPIE.par.test=0} 
+    if( empty(rej.COLvPIE.par[rej.COLvPIE.par$X ==  region,]) == T){COLvPIE.par.test=0} 
     else {COLvPIE.par.test=length(rej.COLvPIE.par[rej.COLvPIE.par$X ==  region,]$X)}
-    if( is.na(rej.COLvPIE.hyb) == T){COLvPIE.hyb.test=0} 
+    
+    if( empty(rej.COLvPIE.hyb[rej.COLvPIE.hyb$X ==  region,]) == T ){COLvPIE.hyb.test=0} 
     else {COLvPIE.hyb.test=length(rej.COLvPIE.hyb[rej.COLvPIE.hyb$X ==  region,]$X)}
-    if( is.na(rej.COL.comb) == T ){COL.comb.test=0} 
+    
+    if( empty(rej.COL.comb[rej.COL.comb$X ==  region,]) == T ){COL.comb.test=0} 
     else {COL.comb.test=length(rej.COL.comb[rej.COL.comb$X ==  region,]$X)}
-    if( is.na(rej.PIE.comb) == T ){PIE.comb.test=0} 
+    
+    if( empty(rej.PIE.comb[rej.PIE.comb$X ==  region,]) == T ){PIE.comb.test=0} 
     else {PIE.comb.test=length(rej.PIE.comb[rej.PIE.comb$X ==  region,]$X)}
     
     
@@ -213,4 +218,146 @@ for (tissue in c("Heart", "Brain", "Testis", "Liver" )){ #,"Heart", "Liver", "Br
   regulatory_class_data_stat_freq_all_tiss<- regulatory_class_data_stat_freq_all_tiss[regulatory_class_data_stat_freq_all_tiss$Tissue != tissue,]
   
   regulatory_class_data_stat_freq_all_tiss <- rbind(regulatory_class_data_stat_freq_all_tiss, regulatory_class_data_stat_freq)
+}
+
+regulatory_class_data_stat$P_C_v_P_biseq <- ifelse(is.nan(regulatory_class_data_stat$P_C_v_P_biseq), NA, regulatory_class_data_stat$P_C_v_P_biseq)
+regulatory_class_data_stat$H_C_v_P_biseq <- ifelse(is.nan(regulatory_class_data_stat$H_C_v_P_biseq), NA, regulatory_class_data_stat$H_C_v_P_biseq)
+head(regulatory_class_data_stat)
+
+
+
+regulatory_class_data_stat_all_tiss$Regpat <- factor(regulatory_class_data_stat_all_tiss$Regpat ,levels = c("Trans", "Cis", "Compensatory", "Cis x Trans", "Cis + Trans", "Conserved", "Conserved_shifted_level", "Ambiguous"))
+head(regulatory_class_data_stat_all_tiss)
+
+regulatory_class_data_stat_freq_all_tiss$Regpat <- factor(regulatory_class_data_stat_freq_all_tiss$Regpat ,levels = c("Trans", "Cis", "Compensatory", "Cis x Trans", "Cis + Trans", "Conserved", "Conserved_shifted_level", "Ambiguous"))
+
+
+
+#COL v PIE plot
+tissue="Heart"
+ggplot(data=regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Tissue == tissue & regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level", ], aes(y=H_C_v_P_biseq, x=P_C_v_P_biseq, col=Regpat))+geom_point(size=5)+
+  scale_color_manual("Reg. pattern", values=c("#C3D898", "#FB4B4E", "#136F63", "turquoise", "yellow", "black", "grey"))+
+  xlim(-1, 1)+
+  ylim(-1, 1)+
+  theme_classic()+
+  ylab("Hybrid: COL - PIE")+
+  xlab("Parental: COL - PIE")+
+  geom_hline(yintercept=0, alpha = 0.7)+
+  geom_vline(xintercept=0, alpha = 0.7)+
+  theme(aspect.ratio=1, legend.position = "none", panel.border = element_rect(colour = "black", fill=NA, size=1), plot.title = element_text(face = "bold", hjust = 0.5), axis.text=element_text(size=23, colour="black"), axis.title=element_text(size=26), legend.text=element_text(size=24),  legend.title=element_text(size=26))
+
+
+#Frequency per regulatory pattern plot
+regred <- regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level",]
+regred_prop <- as.data.frame(prop.table(table(regred$Regpat, regred$Tissue, regred$Chr_type),c(2,3)))
+colnames(regred_prop) <- c("Regpat", "Tissue", "Chr_type", "Freq")
+
+ggplot(regred_prop[regred_prop$Regpat != "Conserved",], aes(fill=Regpat, y=Freq, x=Tissue)) + 
+  theme_classic()+
+  scale_fill_manual("Reg. pattern", values=c("#C3D898", "#FB4B4E", "#136F63", "turquoise", "yellow", "black", "grey"))+
+  geom_bar(position = "stack", stat="identity", colour="black")+
+  ylab("Proportion")+
+  facet_wrap(~Chr_type)+
+  theme(strip.text = element_text(size = 20), legend.position = "none", panel.border = element_rect(colour = "black", fill=NA, size=0.5), plot.title = element_text(face = "bold", hjust = 0.5), axis.text=element_text(size=14, colour="black"), axis.title=element_text(size=16), legend.text=element_text(size=14),  legend.title=element_text(size=16))
+
+
+
+#Pie chart
+library(scales)
+
+all_tiss <- as.data.frame(table(regulatory_class_data_stat_all_tiss$Regpat))
+colnames(all_tiss) <- c("Regpat", "Freq")
+
+bp<- ggplot(all_tiss[all_tiss$Regpat != "Ambiguous"   & all_tiss$Regpat != "Conserved_shifted_level",], aes(x="", y=Freq, fill=Regpat))+
+  geom_bar(width = 1, stat = "identity")
+
+pie <- bp + coord_polar("y", start=0)
+
+blank_theme <- theme_minimal()+
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.border = element_blank(),
+    panel.grid=element_blank(),
+    axis.ticks = element_blank(),
+    plot.title=element_text(size=14, face="bold")
+  )
+
+pie + scale_fill_grey() +  blank_theme +
+  theme(axis.text.x=element_blank()) +
+  theme(legend.text=element_text(size=22),  legend.title=element_text(size=24))+
+
+  #scale_fill_manual("Reg. pattern", values=c("red", "blue", "turquoise", "orange","black", "grey"))
+  scale_fill_manual("Reg. pattern", values=c("#C3D898", "#FB4B4E", "#136F63", "turquoise", "yellow", "black", "pink", "grey"))
+
+
+
+
+
+
+#Inheritance plot 
+library(lmodel2)
+tissue="Heart"
+
+inmod <- lmodel2(COL_Par_v_Hyb_biseq~PIE_Par_v_Hyb_biseq, data=regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Tissue == tissue  & regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level",])
+
+
+ggplot(data=regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Tissue == tissue & regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level", ], aes(y=COL_Par_v_Hyb_biseq, x=PIE_Par_v_Hyb_biseq, col=Regpat))+geom_point(size=5)+
+  scale_color_manual("Reg. pattern", values=c("#C3D898", "#FB4B4E", "#136F63", "turquoise", "yellow", "black", "grey"))+
+  xlim(-1, 1)+
+  ylim(-1, 1)+
+  theme_classic()+
+  ylab("COL: Parental - Hybrid")+
+  xlab("PIE: Parental - Hybrid")+
+  geom_hline(yintercept=0, alpha = 0.7)+
+  geom_vline(xintercept=0, alpha = 0.7)+
+  annotate("text",x=0.55, y= 0.8, size=10, label=bquote(italic(p) ~ "≈" ~ .(round(inmod$P.param,2))), col="black")+
+  geom_abline(slope=inmod$regression.results[2,3], intercept=inmod$regression.results[2,2], col="black", size=1)+ #Major axis regression
+ theme(aspect.ratio=1, legend.position = "none", panel.border = element_rect(colour = "black", fill=NA, size=1), plot.title = element_text(face = "bold", hjust = 0.5), axis.text=element_text(size=23, colour="black"), axis.title=element_text(size=26), legend.text=element_text(size=24),  legend.title=element_text(size=26))
+
+
+
+#Follow-up stats ####
+
+#Between-tissue
+fisher.test(regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level", ]$Regpat, regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level", ]$Tissue, simulate.p.value=TRUE, B=1e6)
+
+#Between-tissue: divergent
+fisher.test(regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved", ]$Regpat, regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level"  & regulatory_class_data_stat_all_tiss$Regpat != "Conserved", ]$Tissue, simulate.p.value=TRUE, B=1e6)
+
+
+
+noCons <- regulatory_class_data_stat_freq_all_tiss[regulatory_class_data_stat_freq_all_tiss$Regpat != "Conserved" & regulatory_class_data_stat_freq_all_tiss$Regpat != "Conserved_shifted_level" & regulatory_class_data_stat_freq_all_tiss$Regpat != "Ambiguous",]
+df <- data.frame()
+mat2 <- matrix(nrow=0, ncol=3)
+
+for(tissue in c("Brain", "Heart", "Liver", "Testis")){
+cis_A_n <- sum(noCons[noCons$Tissue == tissue & noCons$Regpat == "Cis" & noCons$Chr_type == "A",3])
+trans_A_n <- sum(noCons[noCons$Tissue == tissue & noCons$Regpat == "Trans" & noCons$Chr_type == "A",3])
+
+print(tissue)
+print(binom.test(cis_A_n, cis_A_n+trans_A_n))
+
+cis_Z_n <- sum(noCons[noCons$Tissue == tissue & noCons$Regpat == "Cis" & noCons$Chr_type == "Z",3])
+trans_Z_n <- sum(noCons[noCons$Tissue == tissue & noCons$Regpat == "Trans" & noCons$Chr_type == "Z",3])
+
+print(tissue)
+print(binom.test(cis_Z_n, cis_Z_n+trans_Z_n))
+
+
+cis_n <- sum(noCons[noCons$Tissue == tissue & noCons$Regpat == "Cis",3])
+trans_n <- sum(noCons[noCons$Tissue == tissue & noCons$Regpat == "Trans",3])
+
+print(tissue)
+bin<-(binom.test(cis_n, cis_n+trans_n))
+print(bin)
+
+
+
+mat <- matrix(c(trans_A_n, cis_A_n, trans_Z_n, cis_Z_n), nrow=2, ncol=2)
+
+fp <- fisher.test(mat)
+df <- rbind(df, cbind(Tissue=tissue, or=fp$estimate, pval=fp$p.value, totRat_low=0.5* 1/bin$conf.int[1], totRat=trans_n/cis_n, totRat_high=0.5* 1/bin$conf.int[2]) )
+mat <- matrix(c(trans_A_n, cis_A_n, trans_Z_n, cis_Z_n, tissue, tissue), nrow=2, ncol=3)
+mat2 <- rbind(mat2, mat)
 }
