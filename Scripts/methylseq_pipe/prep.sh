@@ -1,5 +1,6 @@
 #!/bin/bash -l
 
+#Concatenate all technical replicates
 
 declare -a spec=("COL" "HYB" "PIE")
 declare -a tiss=("Heart" "Kidney" "Liver" "Brain" "Testis")
