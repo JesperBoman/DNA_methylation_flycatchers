@@ -38,7 +38,6 @@ ls "$bamdir" | grep "HYB" | grep -v "HYB04" | grep -v "v2" > file_list_${tissue}
 
 while IFS= read -r inputbam
 do
-		inputbam="/crex/proj/sllstore2017033/nobackup/work/jesper/DNA_methylation_flycatchers/code/HYB02-Kidney.sorted.bam"
 		perl SNPsplit_v0.3.2/SNPsplit -o ./SNPsplitted_BAMs --snp_file "$fixeddiff" $bamdir/$inputbam &
 		if [ $(jobs -p | wc -w) -ge 10 ]; then
 	        wait
