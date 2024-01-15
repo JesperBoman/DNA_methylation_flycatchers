@@ -325,8 +325,16 @@ fisher.test(regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_t
 #Between-tissue: divergent
 fisher.test(regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved", ]$Regpat, regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level"  & regulatory_class_data_stat_all_tiss$Regpat != "Conserved", ]$Tissue, simulate.p.value=TRUE, B=1e6)
 
+tissue="Testis"
+#Between chromosome types for a given tissue
+fisher.test(regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Tissue == tissue & regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level", ]$Regpat, regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Tissue == tissue & regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level", ]$Chr_type)
+
+#Between chromosome types for a given tissue: divergent
+fisher.test(regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Tissue == tissue & regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved", ]$Regpat, regulatory_class_data_stat_all_tiss[regulatory_class_data_stat_all_tiss$Tissue == tissue & regulatory_class_data_stat_all_tiss$Regpat != "Ambiguous" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved_shifted_level" & regulatory_class_data_stat_all_tiss$Regpat != "Conserved", ]$Chr_type)
 
 
+
+#Cis vs trans
 noCons <- regulatory_class_data_stat_freq_all_tiss[regulatory_class_data_stat_freq_all_tiss$Regpat != "Conserved" & regulatory_class_data_stat_freq_all_tiss$Regpat != "Conserved_shifted_level" & regulatory_class_data_stat_freq_all_tiss$Regpat != "Ambiguous",]
 df <- data.frame()
 mat2 <- matrix(nrow=0, ncol=3)
