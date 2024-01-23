@@ -6,8 +6,8 @@ awk '{if($3 == "Other")print $1 "\t" $2 }' OC.OP.SNP_list.chrom_CpG_annot > OC.O
 awk '{if($3 == "CpG_ans")print $1 "\t" $2 }' OC.OP.SNP_list.chrom_CpG_annot > OC.OP.CpG.SNPs
 
 ### 
-perl /crex/proj/sllstore2017033/repos/scripts/translateChromToScaff.pl -in=OC.OP.non-CpG.SNPs -version=20130221 -level=strict -scafCol=1 -posCol=2 -out=OC.OP.non-CpG.SNPs.scaf &
-perl /crex/proj/sllstore2017033/repos/scripts/translateChromToScaff.pl -in=OC.OP.CpG.SNPs -version=20130221 -level=strict -scafCol=1 -posCol=2 -out=OC.OP.CpG.SNPs.scaf &
+perl translateChromToScaff.pl -in=OC.OP.non-CpG.SNPs -version=20130221 -level=strict -scafCol=1 -posCol=2 -out=OC.OP.non-CpG.SNPs.scaf &
+perl translateChromToScaff.pl -in=OC.OP.CpG.SNPs -version=20130221 -level=strict -scafCol=1 -posCol=2 -out=OC.OP.CpG.SNPs.scaf &
 
 wait
 
