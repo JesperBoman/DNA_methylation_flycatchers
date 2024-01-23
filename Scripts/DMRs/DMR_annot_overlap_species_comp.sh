@@ -2,7 +2,7 @@
 
 ## DMR overlap analysis ##
 
-#mkdir annotation_overlap
+mkdir annotation_overlap
 
 ml bioinfo-tools BEDTools/2.29.2
 faidx="../methylseq_pipe/fAlb15.chrom_Olandfix_hardmask_polyCorG100bpthres_softmask.fa.fai"
