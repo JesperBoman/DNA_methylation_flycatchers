@@ -51,14 +51,3 @@ awk '{if($2 < $3){print $1 "\t" $2-1 "\t" $3 "\t" $4 "\t" $5 "\t" $6} else{print
 awk '{if($2 < $3){print $1 "\t" $2-1 "\t" $3 "\t" $4 "\t" $5 "\t" $6} else{print $1 "\t" $3-1 "\t" $2 "\t" $4 "\t" $5 "\t" $6}}' non-CpG.windowed.weir.fst.chrom > non-CpG.windowed.weir.fst.chrom.strand.corr.bed
 
 
-
-
-
-## 
-
-perl translateScaffToChrom.pl -in=CpG_2kb.windowed.weir.fst -version=20130221 -level=strict -scafCol=1 -posCol=2,3 -out=CpG_2kb.windowed.weir.fst.chrom
-perl translateScaffToChrom.pl -in=non-CpG_2kb.windowed.weir.fst -version=20130221 -level=strict -scafCol=1 -posCol=2,3 -out=non-CpG_2kb.windowed.weir.fst.chrom
-
-
-awk '{if($2 < $3){print $1 "\t" $2-1 "\t" $3 "\t" $4 "\t" $5 "\t" $6} else{print $1 "\t" $3-1 "\t" $2 "\t" $4 "\t" $5 "\t" $6}}' CpG_2kb.windowed.weir.fst.chrom > CpG_2kb.windowed.weir.fst.chrom.strand.corr.bed
-awk '{if($2 < $3){print $1 "\t" $2-1 "\t" $3 "\t" $4 "\t" $5 "\t" $6} else{print $1 "\t" $3-1 "\t" $2 "\t" $4 "\t" $5 "\t" $6}}' non-CpG_2kb.windowed.weir.fst.chrom> non-CpG_2kb.windowed.weir.fst.chrom.strand.corr.bed
