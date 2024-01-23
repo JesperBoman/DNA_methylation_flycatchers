@@ -2,17 +2,8 @@
 
 #translateChromToScaff.pl and translateScaffToChrom.pl are scripts made by Linnéa Smeds
 
-module load bioinfo-tools vcftools/0.1.16 bcftools/1.12
+module load bioinfo-tools vcftools/0.1.16
 
-
-Oland_collared="/crex/proj/sllstore2017033/nobackup/work/alexn/vcf/gt_OC.vcf.gz"
-Oland_pied="/crex/proj/sllstore2017033/nobackup/work/alexn/vcf/gt_OP.vcf.gz"
-
-
-bcftools merge -O z $Oland_collared $Oland_pied > OC.OP.comb.vcf.gz
-
-bcftools query -l $Oland_collared > COL_samples
-bcftools query -l $Oland_pied > PIE_samples
 
 ####
 awk '{if($3 == "Other")print $1 "\t" $2 }' OC.OP.SNP_list.chrom_CpG_annot > OC.OP.non-CpG.SNPs
