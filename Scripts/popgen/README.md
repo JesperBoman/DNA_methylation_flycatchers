@@ -1,2 +1,2 @@
-To create a *F~ST~* gene profile:
+To create an *FST* gene profile:
 
