@@ -29,8 +29,6 @@ pop1="COL_samples"
 pop2="PIE_samples"
 
 
-vcftools --gzvcf OC.OP.comb.vcf.gz --positions <(awk '{print $2 "\t" $3}' OC.OP.CpG.SNPs.scaf) --weir-fst-pop $pop1 --weir-fst-pop $pop2 --out CpG
-vcftools --gzvcf OC.OP.comb.vcf.gz --positions <(awk '{print $2 "\t" $3}' OC.OP.non-CpG.SNPs.scaf) --weir-fst-pop $pop1 --weir-fst-pop $pop2 --out non-CpG
 
 awk '{print $2 "\t" $3}' OC.OP.CpG.SNPs.scaf > OC.OP.CpG.SNPs.scaf.list
 awk '{print $2 "\t" $3}' OC.OP.non-CpG.SNPs.scaf > OC.OP.non-CpG.SNPs.scaf.list
