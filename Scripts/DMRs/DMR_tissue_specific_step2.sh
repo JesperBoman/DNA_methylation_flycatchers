@@ -1,13 +1,4 @@
 #!/bin/bash -l
-#SBATCH -J DMR_ts_s2
-#SBATCH -o DMR_ts_s2.output
-#SBATCH -e DMR_ts_s2.error
-#SBATCH --mail-user jesper.boman@gmail.com
-#SBATCH --mail-type=ALL
-#SBATCH -t 00-00:30:00
-#SBATCH -A p2018002
-#SBATCH -p core
-#SBATCH -n 1
 
 ml bioinfo-tools BEDTools/2.29.2
 dir="./collared/tissue_specific_results"
